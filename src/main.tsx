@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css'
 import App from './App'
 
@@ -10,7 +11,16 @@ import App from './App'
 //   await preloadImagesAsync()
 // }
 // main()
+function Main() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+      </Routes>
+    </Router>
+  );
+}
 
 createRoot(document.getElementById('root')!).render(
-  <App />
+  <Main />
 )
