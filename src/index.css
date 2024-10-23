@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Victor Sherif;
+  src: url(./assets/fonts/VictorSerifTrial-40Regular.96cb4495.otf);
+  font-weight: 400
+}
+
+@font-face {
+  font-family: Victor Sherif;
+  src: url(./assets/fonts/VictorSerifTrial-45RegularItalic.090009dc.otf);
+  font-weight: 400;
+  font-style: italic
+}
+
+@font-face {
+  font-family: Victor Sherif;
+  src: url(./assets/fonts/VictorSerifTrial-50Medium.2ebd3cea.otf);
+  font-weight: 500;
+  font-style: italic
+}
+
+@font-face {
+  font-family: Victor Sherif;
+  src: url(./assets/fonts/VictorSerifTrial-55MediumItalic.ef28da07.otf);
+  font-weight: 500;
+  font-style: italic
+}
+
+:root {
+  --background: #fff;
+  --foreground: #171717
+}
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Victor Sherif, sans-serif
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: Victor Sherif, sans-serif;
+}
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* 构建一个从底部中间放大的动画,并且透明度从 0 到 1 */
+.scale-in-center {
+  animation: scale-in-center 0.5s ease-in-out;
+  animation-fill-mode: forwards;
+  
+}
+@keyframes scale-in-center {
+  0% {
+    /* transform: scale(0.5); */
+    opacity: 0;
+  }
+  100% {
+    /* transform: scale(1); */
+    opacity: 1;
+  }
+}
+/* 上移 50px 并且透明度从 0 ～1 */
+.move-up-and-fade-in {
+  animation: move-up-and-fade-in 1s ease-in-out;
+  animation-fill-mode: forwards;
+}
+.move-up-and-fade-out {
+  animation: move-up-and-fade-out 1s ease-in-out;
+  animation-fill-mode: forwards;
+}
+@keyframes move-up-and-fade-in {
+  0% {
+    transform: translateY(120px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes move-up-and-fade-out {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120px);
+    opacity: 0;
+  }
+}
+
+/* 大于 700px 高度 */
+.video2 {
+  height: 100%;
+  min-height: 700px;
+}
+@media (min-height: 700px) and (max-height: 1000px) and (min-width: 768px) {
+  .video2 {
+    height: 50%;
+    bottom: -120px;
+  }
+}
+@media (max-height: 1000px) and (max-width: 768px) {
+  .video2 {
+    height: 50%;
+    bottom: -120px;
+  }
+}
+@media (min-height: 1000px) {
+  .video2 {
+    height: 100%;
+    bottom: 1220px;
+  }
+}
