@@ -1,7 +1,7 @@
 
 
 import { useEffect, useRef, useState } from 'react'
-import {imgs } from './action'
+import { imgs } from './action'
 import video1 from './assets/1.mp4'
 import heroImage from './assets/hero.jpg'
 import video2 from './assets/2.mp4'
@@ -9,9 +9,17 @@ import video2_1 from './assets/2.webm'
 import sec_2_image from './assets/sec_2.png'
 import logo from './assets/logo.png'
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+const step3Index = ['01', '02', '03']
+const step3Text = ['Explore', 'Invest', 'Earn']
+const step3Desc = [
+  'Browse a collection of iconic masterpieces carefully handpicked by our expert curators from Sotheby\'s and Christie\'s.', 'Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.', 'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
+  'Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.', 'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
+  'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
+]
 function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [step, setStep] = useState(0)
+  const [step3, setStep3] = useState(-1)
   const [hover, setHover] = useState(false)
   // const [hoverCircle, setHoverCircle] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -24,6 +32,9 @@ function App() {
   const isFirstTouch = useRef(true)
   const sec2TitleRef = useRef<HTMLHeadingElement>(null)
   const sec2DescRef = useRef<HTMLParagraphElement>(null)
+  // const step3IndexRef = useRef<HTMLDivElement>(null)
+  // const step3TitleRef = useRef<HTMLDivElement>(null)
+  // const step3DescRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     // 
     if (isFirstTouch.current) {
@@ -108,6 +119,23 @@ function App() {
         if (video2Ref.current?.play) video2Ref.current?.pause()
       }
 
+      // step3
+      // innerHeight > 2 * windowHeight || innerHeight < windowHeight * 3
+      if (scrollRef.current?.scrollTop && (scrollRef.current?.scrollTop > 2 * windowHeight && scrollRef.current?.scrollTop < windowHeight * 3)) {
+        setStep3(0)
+      }
+      // 3 ~ 4
+      else if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight * 3 && scrollRef.current?.scrollTop < windowHeight * 4) {
+        setStep3(1)
+      }
+      // 4 
+      else if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 4) {
+        setStep3(2)
+      }
+      else {
+        setStep3(-1)
+      }
+
 
     })
   }
@@ -173,15 +201,10 @@ function App() {
     // 1.5 ~ 4 倍 windowHeight 之间, 其中 0.5 在 ScrollRef 中,  0.5 ~4 在 ScrollContainer 中
     function onScroll() {
       const maxScroll = 2.5 * window.innerHeight
-      const scrollTop = scrollContainer?.scrollTop 
-      // if (scrollTop < 1.5 * window.innerHeight) {
+      const scrollTop = scrollContainer?.scrollTop
+      // if (scrollTop < window.innerHeight) {
       //   // 绘制第一帧
       //   updateTexture(0)
-      //   return
-      // }
-      // if (scrollTop > maxScroll) {
-      //   // 绘制最后一帧
-      //   updateTexture(totalFrames - 1)
       //   return
       // }
       // 计算当前帧数 (0 ~ 240)，免去 1.5 倍 windowHeight
@@ -190,7 +213,7 @@ function App() {
 
       updateTexture(currentFrame); // 更新动画帧
     }
-    
+
     scrollContainer?.addEventListener('scroll', onScroll);
     // scrollRef.current?.addEventListener('scroll', onScrollRef)
     // scrollRef.current?.addEventListener('scroll', onScrollRef)
@@ -202,7 +225,7 @@ function App() {
     // 768px 以下 100% 宽度
     // 768px 以上 50% 宽度
     // 
-    const width = window.innerWidth > 768 ? window.innerWidth * 0.5 : window.innerWidth
+    const width = window.innerWidth > 768 ? window.innerWidth * 0.5 : window.innerWidth * 1.4
     canvas!.style.width = `${width}px`
     canvas!.style.height = `${width}px`
     if (window.innerWidth > 768) {
@@ -214,7 +237,9 @@ function App() {
     else {
       canvas!.style.position = 'fixed'
       canvas!.style.pointerEvents = 'none'
-      canvas!.style.bottom = '0'
+      canvas!.style.bottom = -window.innerHeight * 0.1 + 'px'
+      canvas!.style.zIndex = '1'
+      canvas!.style.left = window.innerWidth * -0.2 + 'px'
     }
     //  window resize 重新设置 canvas
     window.addEventListener('resize', () => {
@@ -314,7 +339,7 @@ function App() {
         {/* section 3 */}
         <div className="relative w-full bg-white h-screen flex md:flex-row flex-col justify-center items-center">
           <div className="flex-1 md:block hidden"></div>
-          <div className="flex-1 stepBox">
+          <div className="flex-1 stepBox md:block hidden">
             <div className='stepIndex'>01</div>
             <div className='stepTitle'>Explore</div>
             <div className='stepDesc'>Browse a collection of iconic masterpieces carefully handpicked by our expert curators from Sotheby's and Christie's.</div>
@@ -322,7 +347,7 @@ function App() {
         </div>
         <div className="relative w-full bg-white h-screen flex md:flex-row flex-col justify-center items-center">
           <div className="flex-1 md:block hidden"></div>
-          <div className="flex-1 stepBox">
+          <div className="flex-1 stepBox md:block hidden">
             <div className='stepIndex'>02</div>
             <div className='stepTitle'>Invest</div>
             <div className='stepDesc'>Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.</div>
@@ -330,15 +355,24 @@ function App() {
         </div>
         <div className="relative w-full bg-white h-screen flex md:flex-row flex-col justify-center items-center">
           <div className="flex-1 md:block hidden"></div>
-          <div className="flex-1 stepBox">
+          <div className="flex-1 stepBox md:block hidden">
             <div className='stepIndex'>03</div>
             <div className='stepTitle'>Earn</div>
             <div className='stepDesc'>Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.</div>
           </div>
         </div>
-        {/* <div className="relative w-screen h-screen bg-green-500 relative overflow-hidden"></div> */}
+        {/* pointerEvents */}
+        <div className="fixed bottom-[0px] left-[20px] h-screen z-[1] pt-[100px] px-[50px] pointer-events-none">
+          {
+            step3 === -1 ? null: <>
+              <div className='stepIndex'>{step3Index[step3]}</div>
+              <div className='stepTitle'>{step3Text[step3]}</div>
+              <div className='stepDesc'>{step3Desc[step3]}</div>
+            </>
+          }
+        </div>
+        <div id="canvas" ref={canvasRef} className='z-[1] pointer-events-none'></div>
       </div>
-      <div id="canvas" ref={canvasRef} className='z-[1]'></div>
     </div>
 
   </div>
