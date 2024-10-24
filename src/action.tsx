@@ -58,36 +58,36 @@ import ac57 from './assets/action2/2_0056.png'
 import ac58 from './assets/action2/2_0057.png'
 import ac59 from './assets/action2/2_0058.png'
 import ac60 from './assets/action2/2_0059.png'
-import ac61 from './assets/action2/2_0060.png'
-import ac62 from './assets/action2/2_0061.png'
-import ac63 from './assets/action2/2_0062.png'
-import ac64 from './assets/action2/2_0063.png'
-import ac65 from './assets/action2/2_0064.png'
-import ac66 from './assets/action2/2_0065.png'
-import ac67 from './assets/action2/2_0066.png'
-import ac68 from './assets/action2/2_0067.png'
-import ac69 from './assets/action2/2_0068.png'
-import ac70 from './assets/action2/2_0069.png'
-import ac71 from './assets/action2/2_0070.png'
-import ac72 from './assets/action2/2_0071.png'
-import ac73 from './assets/action2/2_0072.png'
-import ac74 from './assets/action2/2_0073.png'
-import ac75 from './assets/action2/2_0074.png'
-import ac76 from './assets/action2/2_0075.png'
-import ac77 from './assets/action2/2_0076.png'
-import ac78 from './assets/action2/2_0077.png'
-import ac79 from './assets/action2/2_0078.png'
-import ac80 from './assets/action2/2_0079.png'
-import ac81 from './assets/action2/2_0080.png'
-import ac82 from './assets/action2/2_0081.png'
-import ac83 from './assets/action2/2_0082.png'
-import ac84 from './assets/action2/2_0083.png'
-import ac85 from './assets/action2/2_0084.png'
-import ac86 from './assets/action2/2_0085.png'
-import ac87 from './assets/action2/2_0086.png'
-import ac88 from './assets/action2/2_0087.png'
-import ac89 from './assets/action2/2_0088.png'
-import ac90 from './assets/action2/2_0089.png'
+// import ac61 from './assets/action2/2_0060.png'
+// import ac62 from './assets/action2/2_0061.png'
+// import ac63 from './assets/action2/2_0062.png'
+// import ac64 from './assets/action2/2_0063.png'
+// import ac65 from './assets/action2/2_0064.png'
+// import ac66 from './assets/action2/2_0065.png'
+// import ac67 from './assets/action2/2_0066.png'
+// import ac68 from './assets/action2/2_0067.png'
+// import ac69 from './assets/action2/2_0068.png'
+// import ac70 from './assets/action2/2_0069.png'
+// import ac71 from './assets/action2/2_0070.png'
+// import ac72 from './assets/action2/2_0071.png'
+// import ac73 from './assets/action2/2_0072.png'
+// import ac74 from './assets/action2/2_0073.png'
+// import ac75 from './assets/action2/2_0074.png'
+// import ac76 from './assets/action2/2_0075.png'
+// import ac77 from './assets/action2/2_0076.png'
+// import ac78 from './assets/action2/2_0077.png'
+// import ac79 from './assets/action2/2_0078.png'
+// import ac80 from './assets/action2/2_0079.png'
+// import ac81 from './assets/action2/2_0080.png'
+// import ac82 from './assets/action2/2_0081.png'
+// import ac83 from './assets/action2/2_0082.png'
+// import ac84 from './assets/action2/2_0083.png'
+// import ac85 from './assets/action2/2_0084.png'
+// import ac86 from './assets/action2/2_0085.png'
+// import ac87 from './assets/action2/2_0086.png'
+// import ac88 from './assets/action2/2_0087.png'
+// import ac89 from './assets/action2/2_0088.png'
+// import ac90 from './assets/action2/2_0089.png'
 import ac91 from './assets/action2/2_0090.png'
 import ac92 from './assets/action2/2_0091.png'
 import ac93 from './assets/action2/2_0092.png'
@@ -147,37 +147,37 @@ import ac146 from './assets/action2/2_0145.png'
 import ac147 from './assets/action2/2_0146.png'
 import ac148 from './assets/action2/2_0147.png'
 import ac149 from './assets/action2/2_0148.png'
-import ac150 from './assets/action2/2_0149.png'
-import ac151 from './assets/action2/2_0150.png'
-import ac152 from './assets/action2/2_0151.png'
-import ac153 from './assets/action2/2_0152.png'
-import ac154 from './assets/action2/2_0153.png'
-import ac155 from './assets/action2/2_0154.png'
-import ac156 from './assets/action2/2_0155.png'
-import ac157 from './assets/action2/2_0156.png'
-import ac158 from './assets/action2/2_0157.png'
-import ac159 from './assets/action2/2_0158.png'
-import ac160 from './assets/action2/2_0159.png'
-import ac161 from './assets/action2/2_0160.png'
-import ac162 from './assets/action2/2_0161.png'
-import ac163 from './assets/action2/2_0162.png'
-import ac164 from './assets/action2/2_0163.png'
-import ac165 from './assets/action2/2_0164.png'
-import ac166 from './assets/action2/2_0165.png'
-import ac167 from './assets/action2/2_0166.png'
-import ac168 from './assets/action2/2_0167.png'
-import ac169 from './assets/action2/2_0168.png'
-import ac170 from './assets/action2/2_0169.png'
-import ac171 from './assets/action2/2_0170.png'
-import ac172 from './assets/action2/2_0171.png'
-import ac173 from './assets/action2/2_0172.png'
-import ac174 from './assets/action2/2_0173.png'
-import ac175 from './assets/action2/2_0174.png'
-import ac176 from './assets/action2/2_0175.png'
-import ac177 from './assets/action2/2_0176.png'
-import ac178 from './assets/action2/2_0177.png'
-import ac179 from './assets/action2/2_0178.png'
-import ac180 from './assets/action2/2_0179.png'
+// import ac150 from './assets/action2/2_0149.png'
+// import ac151 from './assets/action2/2_0150.png'
+// import ac152 from './assets/action2/2_0151.png'
+// import ac153 from './assets/action2/2_0152.png'
+// import ac154 from './assets/action2/2_0153.png'
+// import ac155 from './assets/action2/2_0154.png'
+// import ac156 from './assets/action2/2_0155.png'
+// import ac157 from './assets/action2/2_0156.png'
+// import ac158 from './assets/action2/2_0157.png'
+// import ac159 from './assets/action2/2_0158.png'
+// import ac160 from './assets/action2/2_0159.png'
+// import ac161 from './assets/action2/2_0160.png'
+// import ac162 from './assets/action2/2_0161.png'
+// import ac163 from './assets/action2/2_0162.png'
+// import ac164 from './assets/action2/2_0163.png'
+// import ac165 from './assets/action2/2_0164.png'
+// import ac166 from './assets/action2/2_0165.png'
+// import ac167 from './assets/action2/2_0166.png'
+// import ac168 from './assets/action2/2_0167.png'
+// import ac169 from './assets/action2/2_0168.png'
+// import ac170 from './assets/action2/2_0169.png'
+// import ac171 from './assets/action2/2_0170.png'
+// import ac172 from './assets/action2/2_0171.png'
+// import ac173 from './assets/action2/2_0172.png'
+// import ac174 from './assets/action2/2_0173.png'
+// import ac175 from './assets/action2/2_0174.png'
+// import ac176 from './assets/action2/2_0175.png'
+// import ac177 from './assets/action2/2_0176.png'
+// import ac178 from './assets/action2/2_0177.png'
+// import ac179 from './assets/action2/2_0178.png'
+// import ac180 from './assets/action2/2_0179.png'
 import ac181 from './assets/action2/2_0180.png'
 import ac182 from './assets/action2/2_0181.png'
 import ac183 from './assets/action2/2_0182.png'
@@ -249,18 +249,19 @@ export const imgs = [
   ac31, ac32, ac33, ac34, ac35, ac36, ac37, ac38, ac39, ac40,
   ac41, ac42, ac43, ac44, ac45, ac46, ac47, ac48, ac49, ac50,
   ac51, ac52, ac53, ac54, ac55, ac56, ac57, ac58, ac59, ac60,
-  ac61, ac62, ac63, ac64, ac65, ac66, ac67, ac68, ac69, ac70,
-  ac71, ac72, ac73, ac74, ac75, ac76, ac77, ac78, ac79, ac80,
-  ac81, ac82, ac83, ac84, ac85, ac86, ac87, ac88, ac89, ac90,
+  // ac61, ac62, ac63, ac64, ac65, ac66, ac67, ac68, ac69, ac70,
+  // ac71, ac72, ac73, ac74, ac75, ac76, ac77, ac78, ac79, ac80,
+  // ac81, ac82, ac83, ac84, ac85, ac86, ac87, ac88, ac89, ac90,
   ac91, ac92, ac93, ac94, ac95, ac96, ac97, ac98, ac99, ac100,
   ac101, ac102, ac103, ac104, ac105, ac106, ac107, ac108, ac109, ac110,
   ac111, ac112, ac113, ac114, ac115, ac116, ac117, ac118, ac119, ac120,
   ac121, ac122, ac123, ac124, ac125, ac126, ac127, ac128, ac129, ac130,
   ac131, ac132, ac133, ac134, ac135, ac136, ac137, ac138, ac139, ac140,
-  ac141, ac142, ac143, ac144, ac145, ac146, ac147, ac148, ac149, ac150,
-  ac151, ac152, ac153, ac154, ac155, ac156, ac157, ac158, ac159, ac160,
-  ac161, ac162, ac163, ac164, ac165, ac166, ac167, ac168, ac169, ac170,
-  ac171, ac172, ac173, ac174, ac175, ac176, ac177, ac178, ac179, ac180,
+  ac141, ac142, ac143, ac144, ac145, ac146, ac147, ac148, ac149,
+  // ac150,
+  // ac151, ac152, ac153, ac154, ac155, ac156, ac157, ac158, ac159, ac160,
+  // ac161, ac162, ac163, ac164, ac165, ac166, ac167, ac168, ac169, ac170,
+  // ac171, ac172, ac173, ac174, ac175, ac176, ac177, ac178, ac179, ac180,
   ac181, ac182, ac183, ac184, ac185, ac186, ac187, ac188, ac189, ac190,
   ac191, ac192, ac193, ac194, ac195, ac196, ac197, ac198, ac199, ac200,
   ac201, ac202, ac203, ac204, ac205, ac206, ac207, ac208, ac209, ac210,
@@ -269,6 +270,7 @@ export const imgs = [
   ac231, ac232, ac233, ac234, ac235, ac236, ac237, ac238, ac239, ac240,
   ac241
 ]
+// console.log('imgs.length::',imgs.length)
 // 预先加载所有图片
 const preloadImages = (max = 240, callback: (success: boolean) => void) => {
   let count = 0
