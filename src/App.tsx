@@ -143,11 +143,11 @@ function App() {
       }
 
       // 4 ~ 4.5 之间 ，把 canvas 的 缩小到 0
-      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 4 && scrollRef.current?.scrollTop <= windowHeight * 4.5) {
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 4) {
         // 跟随滚动
         let scale = 1 - (scrollRef.current?.scrollTop - windowHeight * 4) / (windowHeight * 0.5)
         let y = - (scrollRef.current?.scrollTop - windowHeight * 4)
-        if (scale < 0.1) scale = 0
+        if (scale < 0.1 || scale < 0) scale = 0
         console.log('scale ', scale)
         canvasRef.current!.style.transform = `scale(${scale}) translateY(${y}px)`
       }
