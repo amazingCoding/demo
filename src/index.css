@@ -85,6 +85,10 @@ body {
   animation: move-up-and-fade-in 1s ease-in-out;
   animation-fill-mode: forwards;
 }
+.move-up-and-fade-in2 {
+  animation: move-up-and-fade-in 300ms ease-in-out;
+  animation-fill-mode: forwards;
+}
 
 .move-up-and-fade-out {
   animation: move-up-and-fade-out 1s ease-in-out;
@@ -408,6 +412,7 @@ body {
 
   .stepIndex {
     font-size: 36px;
+    top: 10px;
   }
 
   .stepTitle {
@@ -422,9 +427,14 @@ body {
 }
 
 
-@media (min-width: 1500px) and (max-width: 2000px) {
+@media (min-width: 1500px) {
+  .stepBox {
+    padding-left: 80px;
+  }
+
   .stepIndex {
     font-size: 60px;
+    top: 20px;
   }
 
   .stepTitle {
@@ -438,7 +448,7 @@ body {
   }
 }
 
-@media (min-width: 2000px) and (max-width: 3000px) {
+/* @media (min-width: 2000px) and (max-width: 3000px) {
   .stepBox {
     padding-left: 80px;
   }
@@ -457,4 +467,32 @@ body {
     font-size: 28px;
     line-height: 36.4px;
   }
+} */
+
+.frosted-glass {
+  background: rgba(255, 255, 255, 0.3);
+  /* 半透明白色背景 */
+  /* border-radius: 10px; */
+  /* 圆角 */
+  backdrop-filter: blur(10px);
+  /* 毛玻璃效果 */
+  -webkit-backdrop-filter: blur(10px);
+  /* Safari 支持 */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* 边框增加视觉效果 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* 轻微阴影，提升立体感 */
+  padding: 20px;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+}
+.section_title4{
+  font-size: 80px;
+  line-height: 106px;
+  /* font-style: italic; */
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.9);
+  padding-top: 150px;
+  /* margin-left: 80px; */
 }
