@@ -5,341 +5,343 @@ import { drawFrame, imgs } from './action'
 import video1 from './assets/1.mp4'
 import heroImage from './assets/hero.jpg'
 import video2 from './assets/2.mp4'
-import ASScroll from '@ashthornton/asscroll'
+import video2_1 from './assets/2.webm'
 import sec_2_image from './assets/sec_2.png'
 import logo from './assets/logo.png'
-const fps = 120; // 设置目标帧率
-const interval = 1000 / fps;
-
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 function App() {
-  const [loading, setLoading] = useState<boolean>(true)
-  const [progress, setProgress] = useState<number>(0)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const currentFrame = useRef<number>(0)
-  const lastFrame = useRef<number>(0)
-  const isPause = useRef<boolean>(true)
-  // const isReverse = useRef<boolean>(false)
-  const timer = useRef<any | null>(null)
-  const imagesRef = useRef<HTMLImageElement[]>([])
-  const asscrollRef = useRef<ASScroll | null>(null)
-  const isPlaying = useRef<boolean>(false)
-  const lastTime = useRef<number>(0)
+  const [isOpen, setIsOpen] = useState(false)
+  const [step, setStep] = useState(0)
+  const [hover, setHover] = useState(false)
+  // const [hoverCircle, setHoverCircle] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const video2Ref = useRef<HTMLVideoElement>(null)
+  const step1BoxRef = useRef<HTMLDivElement>(null)
+  const circleRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLDivElement>(null)
+  const isFirstTouch = useRef(true)
+  const sec2TitleRef = useRef<HTMLHeadingElement>(null)
+  const sec2DescRef = useRef<HTMLParagraphElement>(null)
   useEffect(() => {
-    preload()
-    return () => {
-      timer.current && clearInterval(timer.current)
+    // 
+    if (isFirstTouch.current) {
+      // 绑定
+      window.addEventListener('click', () => {
+        isFirstTouch.current = false
+        if (isMobile) {
+          videoRef.current?.play()
+        }
+        // 删除
+        window.removeEventListener('click', () => { })
+      })
     }
+    init()
+    initCanvas()
+    // setCanvasSize()
   }, [])
-  useEffect(() => {
-    if (!loading) {
-      init()
-    }
-  }, [loading])
-  const preload = async () => {
-    let count = 0
-    const max = imgs.length
-    const callback = (isSuccess: boolean) => {
-      if (isSuccess) {
-        setLoading(false)
-        setProgress(1)
-      }
-      // 加载图片
-      const images: HTMLImageElement[] = []
-      for (let i = 0; i < imgs.length; i++) {
-        const img = new Image()
-        img.src = imgs[i]
-        images.push(img)
-      }
-      imagesRef.current = images
-    }
-    for (let i = 0; i <= max; i++) {
-      const img = new Image()
-      img.src = i === max ? heroImage : imgs[i]
-      img.onload = () => {
-        count++
-        // 计算进度 1 为全部加载完成
-        setProgress(count / max)
-        if (count === max) {
-          console.log('all images loaded')
-          callback(true)
-        }
-      }
-      img.onerror = () => {
-        console.error(`img ${i} load failed`)
-        callback(false)
-        return
-      }
-    }
-  }
   const init = async () => {
-    // 初始化 asscroll
-    const asscrollContainer = document.getElementById('asscroll-container')
-    if (asscrollContainer) {
-      asscrollContainer.setAttribute('asscroll-container', 'true')
-      const asscroll = new ASScroll({
-        scrollElements: asscrollContainer,
-        // ease: 0.1,
-        // touchEase: 1,
-        disableRaf: true,
-        lockIOSBrowserUI: true
+    // 获取滚动方向
 
-      })
-      window.addEventListener('load', () => {
-        asscroll.enable({
-          restore: true
-        })
-      })
-      asscrollRef.current = asscroll
-      const video1 = document.getElementById('video1') as HTMLVideoElement
-      const video2 = document.getElementById('video2')! as HTMLVideoElement
-      const section2Title = document.getElementById('section-2-title')
-      const section2Content = document.getElementById('section-2-content')
-      if (video1.paused) {
-        document.body.addEventListener('click', () => {
-          if (video1.paused) {
-            video1.play()
-            video2.pause()
-            // 首次播放之后删除事件
-            document.body.removeEventListener('click', () => { })
-          }
-        })
-      }
-      // 监听滚动
-      asscrollRef.current.on('scroll', (e: any) => {
-        console.log(e)
-        const headerHeight = document.getElementById('header')!.clientHeight
-        const windowHeight = window.innerHeight
-
-        // 在 0 ～ h-screen 之间
-        if (e >= 0 && e <= windowHeight) {
-          // 如果没有播放，则播放
-          if (video1.paused) {
-            video1.play()
-          }
-          // section-bg 的背景色，跟随滚动 0～0.6
-          const sectionBg = document.getElementById('section-bg')
-          if (sectionBg) {
-            // max 0.6  min 0
-            const opacity = e / windowHeight * 0.6
-            sectionBg.style.backgroundColor = `rgba(0,0,0,${opacity})`
-          }
-          // document.getElementById('logo')! 的 filter 跟随滚动 0～100%
-          const logo = document.getElementById('logo')!
-          if (e > windowHeight / 2) {
-            if (logo) {
-              const p = (e - windowHeight / 2) / (windowHeight / 2)
-              logo.style.filter = `invert(${p * 100}%)`
-            }
-          }
-          // section1.style.transform = `translateY(${e}px)`
-        }
-        else {
-          if (!video1.paused) {
-            video1.pause()
-          }
-        }
-        if (e >= windowHeight - headerHeight && e <= windowHeight * 2) {
-          if (video2.paused) {
-            video2.play()
-          }
-        }
-        else {
-          if (!video2.paused) {
-            video2.pause()
-          }
-        }
-        if (e >= windowHeight / 3) {
-          const section2Title = document.getElementById('section-2-title')
-          if (section2Title) {
-            section2Title.classList.add('move-up-and-fade-in')
-            section2Title.classList.remove('move-up-and-fade-out')
-          }
-          const section2Content = document.getElementById('section-2-content')
-          if (section2Content) {
-            section2Content.classList.add('move-up-and-fade-in')
-            section2Content.classList.remove('move-up-and-fade-out')
-          }
-        }
-        else {
-          section2Title?.classList.remove('move-up-and-fade-in')
-          section2Content?.classList.remove('move-up-and-fade-in')
-          section2Title?.classList.add('move-up-and-fade-out')
-          section2Content?.classList.add('move-up-and-fade-out')
-        }
-        // 从 windowHeight *2 到  windowHeight *3 之间，绘制 canvas
-        if (e >= windowHeight * 1.5 && e <= windowHeight * 3.5) {
-          // 先暂停动画，然后读取到当前 e ，获取对应的 frame ，然后从当前 frame 逐帧绘制 33 ms 一张
-          const ctx = canvasRef.current?.getContext('2d')
-          if (ctx) {
-            const currentPos = (e - windowHeight * 1.5) / (windowHeight * 2)
-            const currentFrame = Math.floor(currentPos * imagesRef.current.length)
-            lastFrame.current = currentFrame
-          }
-        }
-        if (e >= windowHeight * 1.5 && e <= windowHeight * 5) {
-          // 先展示 canvasRef 
-          canvasRef.current!.style.display = 'block'
-        }
-        else {
-          const ctx = canvasRef.current?.getContext('2d')
-          if (ctx) {
-            ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height)
-          }
-          lastFrame.current = 0
-          currentFrame.current = 0
-          canvasRef.current!.style.display = 'none'
-        }
-      })
-    }
-    const devicePixelRatio = window.devicePixelRatio || 1;
-    canvasRef.current!.width = canvasRef.current!.width * devicePixelRatio;
-    canvasRef.current!.height = canvasRef.current!.height * devicePixelRatio;
-    const ctx = canvasRef.current?.getContext('2d')
-    if (ctx) {
-      ctx.imageSmoothingEnabled = false;
-      ctx.scale(devicePixelRatio, devicePixelRatio);
-    }
-    const animate = (timestamp: number) => {
-      if (timestamp - lastTime.current >= interval) {
-        lastTime.current = timestamp;
-        asscrollRef.current?.update()
-        if (isPause.current) {
-        }
-        if (currentFrame.current === lastFrame.current) {
-          isPlaying.current = false
-        }
-        else {
-          isPlaying.current = true
-        }
-        if (isPlaying.current) {
-          drawFrame(ctx!, imagesRef.current[currentFrame.current])
-          if (currentFrame.current > lastFrame.current) {
-            currentFrame.current--
-          }
-          else {
-            currentFrame.current++
-          }
+    scrollRef.current?.addEventListener('scroll', () => {
+      // const upDirection = lastScrollTop.current > (scrollRef.current?.scrollTop || 0) ? true : false
+      // console.log(upDirection)
+      // 去到 一个 h-screen 的 高度 ,header 变化
+      const windowHeight = window.innerHeight
+      // if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight) {
+      //   setIsOpen(true)
+      // } else {
+      //   setIsOpen(false)
+      // }
+      // section 2 标题和描述 从 0.6 * windowHeight 到 windowHeight  之间, 逐渐显示
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= 0.6 * windowHeight) {
+        // 判断有没有 class move-up-and-fade-in
+        if (!sec2TitleRef.current?.classList.contains('move-up-and-fade-in')) {
+          sec2TitleRef.current?.classList.remove('move-up-and-fade-out')
+          sec2DescRef.current?.classList.remove('move-up-and-fade-out')
+          sec2TitleRef.current?.classList.add('move-up-and-fade-in')
+          sec2DescRef.current?.classList.add('move-up-and-fade-in')
         }
       }
-      requestAnimationFrame(animate)
-    }
-    requestAnimationFrame(animate)
+      else {
+        if (sec2TitleRef.current?.classList.contains('move-up-and-fade-in')) {
+          sec2TitleRef.current?.classList.remove('move-up-and-fade-in')
+          sec2DescRef.current?.classList.remove('move-up-and-fade-in')
+          sec2TitleRef.current?.classList.add('move-up-and-fade-out')
+          sec2DescRef.current?.classList.add('move-up-and-fade-out')
+        }
+      }
+      // header,  大于 windowHeight - headerRef.current?.clientHeight
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight) {
+        setStep(1)
+      }
+      else {
+        setStep(0)
+      }
+      // section 1,  从 0.3 * windowHeight 到 windowHeight  之间, 背景逐渐变黑 rgba(0,0,0,0.0) ~ rgba(0,0,0,0.8)
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop < windowHeight) {
+        // (scrollRef.current?.scrollTop > 0.3 * windowHeight)
+        if (scrollRef.current?.scrollTop > 0.3 * windowHeight) {
+          step1BoxRef.current!.style.backgroundColor = `rgba(0,0,0,${scrollRef.current?.scrollTop / windowHeight * 0.8})`
+        } else {
+          step1BoxRef.current!.style.backgroundColor = `rgba(0,0,0,0)`
+        }
+      }
+      // section 1 的底部圆形按钮
+      if (scrollRef.current?.scrollTop && (scrollRef.current?.scrollTop > 0 || scrollRef.current?.scrollTop < windowHeight)) {
+        circleRef.current!.style.transform = `translateY(${scrollRef.current?.scrollTop}px)`
+      }
+      else {
+        circleRef.current!.style.transform = `translateY(0)`
+      }
+      //  VIDEO1 
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight) {
+        if (videoRef.current?.play) videoRef.current?.pause()
+      } else {
+        if (videoRef.current?.pause) videoRef.current?.play()
+      }
+      //  VIDEO2
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight * 0.6) {
+        if (video2Ref.current?.pause) video2Ref.current?.play()
+      } else {
+        if (video2Ref.current?.play) video2Ref.current?.pause()
+      }
+
+
+    })
   }
-  return (
-    loading ?
-      <div className='w-full h-full flex justify-center items-center bg-white'>
-        <div className='h-[80px] w-[50%] rounded-full flex justify-center items-center border-2 border-black relative overflow-hidden'>
-          <div className='w-full h-[78px] bg-red-500 absolute left-0 top-0' style={{ width: `${progress * 100}%` }}></div>
-          <img id='logo' src={logo} alt="logo" className="sm:w-[160px] w-[96px]" style={{ filter: 'invert(0%)' }} />
-        </div>
-      </div> : <div className='w-full h-full absolute top-0 left-0 scale-in-center'>
-        <header id='header' className="h-fit fixed top-0 z-[100] left-1/2 -translate-x-1/2 w-full" style={{ backgroundColor: 'transparent' }}>
-          <div className="flex justify-between max-w-screen-2xl w-[90vw] sm:w-[85vw] py-8 mx-auto">
-            <div className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
-              <img id='logo' src={logo} alt="logo" className="sm:w-[160px] w-[96px]" style={{ filter: 'invert(0%)' }} />
-            </div>
-          </div>
-        </header>
-        <div className='w-full relative bg-transparent relative' id="asscroll-container">
-          <div className='w-full'>
-            <section className="relative h-screen w-full bg-transparent" id="section-1"  >
-              <video playsInline={true} autoPlay={true} muted={true} loop={true}
-                id='video1'
-                className="h-full w-full object-cover" poster={heroImage}>
-                <source src={video1} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <div id='section-bg' className='absolute top-0 left-0 w-full h-full'></div>
-              <button
-                onClick={() => {
-                  const browserHeight = window.innerHeight
-                  asscrollRef.current?.scrollTo(browserHeight)
-                }}
-                className="border-2 border-white rounded-full w-[46px] h-[46px] absolute animate-bounce bottom-10 left-1/2 -ml-2 z-10 group">
-                <svg className="absolute top-2 left-1/2 -ml-3 text-white h-6 w-6 transition-all duration-300 ease-in-out group-hover:text-black" xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor" stroke="currentColor" strokeWidth="0" viewBox="0 0 24 24">
-                  <path d="M4.97 13.22a.75.75 0 011.06 0L11 18.19V3.75a.75.75 0 011.5 0v14.44l4.97-4.97a.749.749 0 011.275.326.749.749 0 01-.215.734l-6.25 6.25a.75.75 0 01-1.06 0l-6.25-6.25a.75.75 0 010-1.06z"></path>
-                </svg>
-                <span className="absolute w-0 h-0 top-1/2 l-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full transition-all duration-300 ease-in-out group-hover:w-[46px] group-hover:h-[46px] z-[-1]"></span>
-              </button>
-            </section>
-            <section className="relative h-screen w-full bg-transparent overflow-hidden" id="section-2"  >
-              <video playsInline={true} autoPlay={true} muted={true} loop={true}
-                id='video2'
-                // 如果高度有 
-                className="w-full video2 object-cover absolute bottom-0 left-0"
-                poster={sec_2_image}>
-                <source src={video2} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <div className="flex justify-between flex-col lg:flex-row gap-4 pt-20 md:pt-24 lg:pt-32 max-w-screen-2xl w-[90vw] sm:w-[85vw] mx-auto">
-                <div id='section-2-title' className="w-fit" style={{ opacity: 0, willChange: 'transform', transform: 'none' }}>
-                  <h1
-                    className="text-[50px] md:text-[60px] lg:text-[70px] xl:text-[90px] leading-[65px] sm:leading-[80px] lg:leading-[84px] xl:leading-[131px]  text-balance  tracking-tight">
-                    Art Is The Visual <span className="italic font-medium">Proof Of History</span> For Humanity
-                  </h1>
-                </div>
-                <div
-                  id='section-2-content'
-                  className="w-fit" style={{ opacity: 0, willChange: 'transform', transform: 'none' }}>
-                  <p className="text-[16px] leading-[20.4px] sm:text-[20px] sm:leading-[26.2px] lg:pt-20 xl:pt-40 max-w-[820px] w-full">
-                    Arttoo is about unlocking a world of possibilities.Become part of a vibrant art community, connect with a
-                    timeless piece of culture, and watch your investment grow alongside your passion, with a hassle-free mindset for
-                    provenance tracking. All transactions are secure, transparent, and regulated through the beauty of blockchain
-                    technologies.</p>
-                </div>
-              </div>
-              {/* <div id='section-bg' className='absolute top-0 left-0 w-full h-full'></div> */}
-            </section>
-            <div className='w-full bg-transparent'>
-              <section className="relative w-full h-screen bg-transparent flex" id="section-3"  >
-                <div className="flex-1"></div>
-                <div className="flex-1 flex gap-4 items-center justify-center sm:pt-8 lg:pt-16">
-                  <span className="text-black/30 text-[40px] italic leading-[52.4px] lg:mt-4">01</span>
-                  <div className="flex-1">
-                    <h4
-                      className="text-[50px] sm:text-[75px] md:text-[100px] text-balance leading-[65px] sm:leading-[100px] md:leading-[131px] italic font-medium">
-                      Explore</h4>
-                    <p className="text-[16px] leading-[20.4px] md:text-[20px] md:leading-[26.2px]">Browse a collection of iconic masterpieces
-                      carefully handpicked by our expert curators from Sotheby's and Christie's.</p>
-                  </div>
-                </div>
-              </section>
-              <section className="relative w-full h-screen bg-transparent flex" id="section-4"  >
-                <div className="flex-1"></div>
-                <div className="flex-1 flex gap-4 items-center justify-center sm:pt-8 lg:pt-16">
-                  <span className="text-black/30 text-[40px] italic leading-[52.4px] lg:mt-4">02</span>
-                  <div className="flex-1">
-                    <h4
-                      className="text-[50px] sm:text-[75px] md:text-[100px] text-balance leading-[65px] sm:leading-[100px] md:leading-[131px] italic font-medium">
-                      Invest</h4>
-                    <p className="text-[16px] leading-[20.4px] md:text-[20px] md:leading-[26.2px]">Browse a collection of iconic masterpieces
-                      Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.
-                    </p>
-                  </div>
-                </div>
-              </section>
-              <section className="relative w-full h-screen bg-transparent flex" id="section-5"  >
-                <div className="flex-1"></div>
-                <div className="flex-1 flex gap-4 items-center justify-center sm:pt-8 lg:pt-16">
-                  <span className="text-black/30 text-[40px] italic leading-[52.4px] lg:mt-4">03</span>
-                  <div className="flex-1">
-                    <h4
-                      className="text-[50px] sm:text-[75px] md:text-[100px] text-balance leading-[65px] sm:leading-[100px] md:leading-[131px] italic font-medium">
-                      Earn</h4>
-                    <p className="text-[16px] leading-[20.4px] md:text-[20px] md:leading-[26.2px]">Earn from your investment with no hidden fees, no auction house markups, no gallery markups, no hidden true-up fees.
-                    </p>
-                  </div>
-                </div>
-              </section>
+  const initCanvas = () => {
+    setCanvasSize()
+    const THREE = window.THREE
+    const scene = new THREE.Scene();
+    const container = canvasRef.current!;
+    const scrollContainer = scrollRef.current!
+    //document.getElementById('scroll-container') as HTMLDivElement;
+    // 创建相机
+    const camera = new THREE.PerspectiveCamera(75, container?.clientWidth / container?.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+    });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(container?.clientWidth, container?.clientHeight);
+    container?.appendChild(renderer.domElement);
+    // 创建平面几何体，并添加到场景
+    const geometry = new THREE.PlaneGeometry(5, 5); // 16:9 比例的平面
+    let texture = new THREE.TextureLoader().load(imgs[0]); // 加载第一帧图片
+    const material = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true, // 支持透明
+      opacity: 1, // 完全不透明
+    });
+    const plane = new THREE.Mesh(geometry, material);
+    scene.add(plane);
+    camera.position.z = 5;
+    // 准备 240 张图片路径
+    const totalFrames = imgs.length;
+    // 将所有帧图片路径存储在一个数组中
+    const images: string[] = imgs;
+    // 预加载所有图片
+    const loadedTextures: any[] = [];
+    const loader = new THREE.TextureLoader();
+    images.forEach((imagePath, index) => {
+      loader.load(imagePath, (texture: any) => {
+        loadedTextures[index] = texture;
+      });
+    });
 
-            </div>
+    // 更新帧函数，根据当前帧数切换纹理
+    function updateTexture(frame: number) {
+      if (loadedTextures[frame]) {
+        material.map.dispose(); // 释放旧纹理
+        material.map = loadedTextures[frame]; // 更新为新的纹理
+        material.needsUpdate = true; // 告诉 Three.js 更新材质
+      }
+    }
 
-          </div>
-        </div>
-        <canvas width={500} height={500} ref={canvasRef} className='w-[500px] h-[500px] fixed top-[50%] -translate-y-1/2 left-[25%] -translate-x-1/2'></canvas>
+
+    // // 使用 setInterval 来控制帧率
+    // setInterval(updateTexture, frameRate);
+
+    // 渲染循环
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+    // 根据滚动条位置计算当前帧数
+    // 1.5 ~ 4 倍 windowHeight 之间, 其中 0.5 在 ScrollRef 中,  0.5 ~4 在 ScrollContainer 中
+    function onScroll() {
+      const maxScroll = 2.5 * window.innerHeight
+      const scrollTop = scrollContainer?.scrollTop 
+      // if (scrollTop < 1.5 * window.innerHeight) {
+      //   // 绘制第一帧
+      //   updateTexture(0)
+      //   return
+      // }
+      // if (scrollTop > maxScroll) {
+      //   // 绘制最后一帧
+      //   updateTexture(totalFrames - 1)
+      //   return
+      // }
+      // 计算当前帧数 (0 ~ 240)，免去 1.5 倍 windowHeight
+      const scrollProgress = (scrollTop - 1.5 * window.innerHeight) / (maxScroll);
+      const currentFrame = Math.min(totalFrames - 1, Math.floor(scrollProgress * totalFrames));
+
+      updateTexture(currentFrame); // 更新动画帧
+    }
+    
+    scrollContainer?.addEventListener('scroll', onScroll);
+    // scrollRef.current?.addEventListener('scroll', onScrollRef)
+    // scrollRef.current?.addEventListener('scroll', onScrollRef)
+    animate();
+  }
+  const setCanvasSize = () => {
+    const canvas = canvasRef.current
+    // 正方形
+    // 768px 以下 100% 宽度
+    // 768px 以上 50% 宽度
+    // 
+    const width = window.innerWidth > 768 ? window.innerWidth * 0.5 : window.innerWidth
+    canvas!.style.width = `${width}px`
+    canvas!.style.height = `${width}px`
+    if (window.innerWidth > 768) {
+      canvas!.style.position = 'fixed'
+      canvas!.style.top = window.innerHeight / 2 - width / 2 + 'px'
+      // 不响应滚动
+      canvas!.style.pointerEvents = 'none'
+    }
+    else {
+      canvas!.style.position = 'fixed'
+      canvas!.style.pointerEvents = 'none'
+      canvas!.style.bottom = '0'
+    }
+    //  window resize 重新设置 canvas
+    window.addEventListener('resize', () => {
+      setCanvasSize()
+    })
+  }
+  return <div className='w-full h-full'>
+    {/* header */}
+    <div className={`flex md:px-[80px] md:py-[30px] px-[20px] py-[20px] relative z-[13] absolute top-0 left-0 w-full ${step === 1 ? 'bg-white bg-opacity-80' : ''}`} ref={headerRef}>
+      <img src={logo} alt="logo" className='md:h-[35px] h-[30px]' style={{ filter: isOpen || step === 1 ? 'invert(1)' : 'invert(0)' }} />
+      <div className={`hidden md:flex items-center flex-1 justify-end ${isOpen || step === 1 ? 'text-black' : 'text-white'}`}>
+        <div className='nav-item'>Artworks</div>
+        <div className='nav-item'>Learn</div>
+        <div className='nav-item'>About</div>
+        <div className='nav-item'>Contact us</div>
       </div>
+      <div className={`md:hidden w-[70px] h-[70px] absolute right-0 top-0 flex items-center justify-center cursor-pointer ${isOpen || step === 1 ? 'text-black' : 'text-white'}`} onClick={() => {
+        setIsOpen(!isOpen)
+      }}>
+        {!isOpen ? <svg width="24" height="22" viewBox="0 0 24 22" fill="none">
+          <rect width="24" height="2" fill="currentColor" style={{ fill: 'currentColor', fillOpacity: 1 }} />
+          <rect y="10" width="24" height="2" fill="currentColor" style={{ fill: 'currentColor', fillOpacity: 1 }} />
+          <rect y="20" width="24" height="2" fill="currentColor" style={{ fill: 'currentColor', fillOpacity: 1 }} />
+        </svg> :
+          <svg width="24" height="22" viewBox="0 0 24 22" fill="none">
+            <rect x="2.80762" y="18.7783" width="24" height="2" transform="rotate(-45 2.80762 18.7783)" fill="currentColor" style={{ fill: 'currentColor', fillOpacity: 1 }} />
+            <rect width="24" height="2" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 21.1914 18.7783)" fill="currentColor" style={{ fill: 'currentColor', fillOpacity: 1 }} />
+          </svg>
+        }
+      </div>
+    </div>
+    {
+      isOpen ? <div className='absolute top-0 left-0 w-full h-full bg-white z-[10] bg-white move-up-and-fade-in'>
+        <div className='h-[70px]'></div>
+        <div className='text-black nav-item'>Artworks</div>
+        <div className='text-black nav-item'>Learn</div>
+        <div className='text-black nav-item'>About</div>
+        <div className='text-black nav-item'>Contact us</div>
+      </div> : null
+    }
+    {/* body */}
+    <div className='w-full h-full overflow-y-auto absolute top-0 left-0' ref={scrollRef}>
+      <div>
+        {/* section 1 */}
+        <section className='h-screen w-full fixed top-0 left-0' >
+          <div className="w-full h-full" >
+            <video playsInline={true} autoPlay={true} muted={true} loop={true}
+              id='video1'
+              className="h-full w-full object-cover" poster={heroImage} ref={videoRef}>
+              <source src={video1} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div className='section_hover_btn absolute md:bottom-[30px] left-1/2 md:ml-[-32px] md:w-[64px] md:h-[64px] w-[50px] h-[50px] bottom-[25px] ml-[-25px] animate-bounce bg-white rounded-full flex items-center justify-center' >
+              <svg className={`absolute h-[20px] w-[20px] transition-all duration-300 ease-in-out ${hover ? 'text-white' : 'text-black '}`} xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor" stroke="currentColor" strokeWidth="0" viewBox="0 0 24 24">
+                <path d="M4.97 13.22a.75.75 0 011.06 0L11 18.19V3.75a.75.75 0 011.5 0v14.44l4.97-4.97a.749.749 0 011.275.326.749.749 0 01-.215.734l-6.25 6.25a.75.75 0 01-1.06 0l-6.25-6.25a.75.75 0 010-1.06z"></path>
+              </svg>
+              <div className={`section_hover_circle ${hover ? 'section_hover_circleHover' : ''}`}></div>
+            </div>
+          </div>
+        </section>
+        <div className="relative h-screen w-full bg-transparent relative" ref={step1BoxRef}>
+          <div ref={circleRef} className='absolute md:bottom-[35px] left-1/2 md:w-[70px] md:h-[70px] w-[60px] h-[60px] bottom-[25px] ml-[-35px] bg-transparent cursor-pointer rounded-full'
+            onMouseEnter={() => {
+              if (isMobile) return
+              setHover(true)
+            }}
+            onMouseLeave={() => {
+              if (isMobile) return
+              setHover(false)
+            }}
+            onClick={() => {
+              setStep(1)
+              const windowHeight = window.innerHeight
+              scrollRef.current?.scrollTo({ top: windowHeight, behavior: 'smooth' })
+            }}>
+          </div>
+        </div>
+        {/* section 2 */}
+        <div className="relative w-screen h-screen bg-white relative overflow-hidden">
+          {/* 1984 * 1116 */}
+          <div className='flex relative z-[1] section_2'>
+            <h1 ref={sec2TitleRef} className='text-black move-up-and-fade-out'>Art Is The Visual <span className="italic font-medium">Proof Of History</span> For Humanity</h1>
+            <p ref={sec2DescRef} className='text-black move-up-and-fade-out'>
+              Arttoo is about unlocking a world of possibilities.Become part of a vibrant art community, connect with a timeless piece of culture, and watch your investment grow alongside your passion, with a hassle-free mindset for provenance tracking. All transactions are secure, transparent, and regulated through the beauty of blockchain technologies.
+            </p>
+          </div>
+          <video
+            playsInline={true}
+            muted={true} loop={true}
+            id='video2'
+            poster={sec_2_image} ref={video2Ref}>
+            <source src={video2_1} type="video/webm" />
+            <source src={video2} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        {/* section 3 */}
+        <div className="relative w-full bg-white h-screen flex md:flex-row flex-col justify-center items-center">
+          <div className="flex-1 md:block hidden"></div>
+          <div className="flex-1 stepBox">
+            <div className='stepIndex'>01</div>
+            <div className='stepTitle'>Explore</div>
+            <div className='stepDesc'>Browse a collection of iconic masterpieces carefully handpicked by our expert curators from Sotheby's and Christie's.</div>
+          </div>
+        </div>
+        <div className="relative w-full bg-white h-screen flex md:flex-row flex-col justify-center items-center">
+          <div className="flex-1 md:block hidden"></div>
+          <div className="flex-1 stepBox">
+            <div className='stepIndex'>02</div>
+            <div className='stepTitle'>Invest</div>
+            <div className='stepDesc'>Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.</div>
+          </div>
+        </div>
+        <div className="relative w-full bg-white h-screen flex md:flex-row flex-col justify-center items-center">
+          <div className="flex-1 md:block hidden"></div>
+          <div className="flex-1 stepBox">
+            <div className='stepIndex'>03</div>
+            <div className='stepTitle'>Earn</div>
+            <div className='stepDesc'>Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.</div>
+          </div>
+        </div>
+        {/* <div className="relative w-screen h-screen bg-green-500 relative overflow-hidden"></div> */}
+      </div>
+      <div id="canvas" ref={canvasRef} className='z-[1]'></div>
+    </div>
 
-  )
+  </div>
 }
 
 export default App
