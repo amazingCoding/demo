@@ -209,8 +209,12 @@ function App() {
       // }
       // 计算当前帧数 (0 ~ 240)，免去 1.5 倍 windowHeight
       const scrollProgress = (scrollTop - 1.5 * window.innerHeight) / (maxScroll);
-      const currentFrame = Math.min(totalFrames - 1, Math.floor(scrollProgress * totalFrames));
-
+      let currentFrame = Math.min(totalFrames - 1, Math.floor(scrollProgress * totalFrames));
+      console.log(currentFrame)
+      // 小于 0 设置为 0
+      if (currentFrame < 0) {
+        currentFrame = 0
+      }
       updateTexture(currentFrame); // 更新动画帧
     }
 
@@ -362,7 +366,7 @@ function App() {
           </div>
         </div>
         {/* pointerEvents */}
-        <div className="fixed bottom-[0px] left-[20px] h-screen z-[1] pt-[100px] px-[50px] pointer-events-none">
+        <div className="fixed bottom-[0px] left-[20px] h-screen z-[1] pt-[100px] px-[50px] pointer-events-none md:hidden">
           {
             step3 === -1 ? null: <>
               <div className='stepIndex'>{step3Index[step3]}</div>
