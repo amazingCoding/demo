@@ -41,6 +41,7 @@ function App() {
   const sec4Box1Ref = useRef<HTMLDivElement>(null)
   const sec4Box2Ref = useRef<HTMLDivElement>(null)
   const sec4Box3Ref = useRef<HTMLDivElement>(null)
+  const stepTextRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     // 
     if (isFirstTouch.current) {
@@ -72,7 +73,7 @@ function App() {
       //   setIsOpen(false)
       // }
       // section 2 标题和描述 从 0.6 * windowHeight 到 windowHeight  之间, 逐渐显示
-      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= 0.6 * windowHeight) {
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= 0.1 * windowHeight) {
         // 判断有没有 class move-up-and-fade-in
         if (!sec2TitleRef.current?.classList.contains('move-up-and-fade-in')) {
           sec2TitleRef.current?.classList.remove('move-up-and-fade-out')
@@ -127,7 +128,7 @@ function App() {
 
       // step3
       // innerHeight > 2 * windowHeight || innerHeight < windowHeight * 3
-      if (scrollRef.current?.scrollTop && (scrollRef.current?.scrollTop > 2 * windowHeight && scrollRef.current?.scrollTop < windowHeight * 3)) {
+      if (scrollRef.current?.scrollTop && (scrollRef.current?.scrollTop > 1.8 * windowHeight && scrollRef.current?.scrollTop < windowHeight * 3)) {
         setStep3(0)
       }
       // 3 ~ 4
@@ -145,14 +146,16 @@ function App() {
       // 4 ~ 4.5 之间 ，把 canvas 的 缩小到 0
       if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 4) {
         // 跟随滚动
-        let scale = 1 - (scrollRef.current?.scrollTop - windowHeight * 4) / (windowHeight * 0.5)
+        // let scale = 1 - (scrollRef.current?.scrollTop - windowHeight * 4) / (windowHeight * 0.5)
         let y = - (scrollRef.current?.scrollTop - windowHeight * 4)
-        if (scale < 0.1 || scale < 0) scale = 0
-        console.log('scale ', scale)
-        canvasRef.current!.style.transform = `scale(${scale}) translateY(${y}px)`
+        // if (scale < 0.1 || scale < 0) scale = 0
+        // console.log('scale ', scale)
+        canvasRef.current!.style.transform = `translateY(${y}px)`
+        // stepTextRef
+        stepTextRef.current!.style.transform = `translateY(${y}px)`
       }
       // 5 之后
-      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 4.2) {
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 4.1) {
         sec4TitleRef.current?.classList.add('move-up-and-fade-in')
         sec4Box1Ref.current?.classList.add('move-up-and-fade-in')
         sec4Box2Ref.current?.classList.add('move-up-and-fade-in')
@@ -372,7 +375,10 @@ function App() {
             playsInline={true}
             muted={true} loop={true}
             id='video2'
-            poster={sec_2_image} ref={video2Ref}>
+            poster={sec_2_image}
+            ref={video2Ref}
+            className='w-full object-cover'
+          >
             <source src={video2_1} type="video/webm" />
             <source src={video2} type="video/mp4" />
             Your browser does not support the video tag.
@@ -403,8 +409,10 @@ function App() {
           </div>
         </div>
         <div className="relative w-full bg-white md:px-[80px] px-[20px]">
-          <div ref={sec4TitleRef} className='section_title4 w-[60%]'>Your investments<br />are <span className='font-bold italic'>secured</span> with us</div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 justify-between gap-8 lg:gap-16 mt-[150px]">
+          <div ref={sec4TitleRef} className='section_title4'>
+            Your investments<br />are <span className='font-bold italic'>secured</span> with us
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 justify-between gap-8 lg:gap-16 md:mt-[150px] mt-[40px]">
             <div ref={sec4Box1Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
               <div id="about-content" className="flex flex-col gap-8">
                 <img alt="Gurrjohns" loading="lazy" width="492" height="100"
@@ -490,7 +498,7 @@ function App() {
           </div>
         </div>
         {/* pointerEvents */}
-        <div className="fixed bottom-[0px] left-[20px] h-screen z-[1] pt-[100px] px-[50px] pointer-events-none md:hidden">
+        <div ref={stepTextRef} className="fixed bottom-[0px] left-[20px] h-screen z-[1] pt-[100px] px-[50px] pointer-events-none md:hidden">
           {
             step3 === -1 ? null : <>
               <div className='stepIndex'>{step3Index[step3]}</div>
