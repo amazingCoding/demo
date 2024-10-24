@@ -478,9 +478,9 @@ body {
   /* 毛玻璃效果 */
   -webkit-backdrop-filter: blur(10px);
   /* Safari 支持 */
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* border: 1px solid rgba(255, 255, 255, 0.3); */
   /* 边框增加视觉效果 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
   /* 轻微阴影，提升立体感 */
   padding: 20px;
   text-align: center;
