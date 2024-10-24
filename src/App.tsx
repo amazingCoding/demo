@@ -36,9 +36,11 @@ function App() {
   const isFirstTouch = useRef(true)
   const sec2TitleRef = useRef<HTMLHeadingElement>(null)
   const sec2DescRef = useRef<HTMLParagraphElement>(null)
-  // const step3IndexRef = useRef<HTMLDivElement>(null)
-  // const step3TitleRef = useRef<HTMLDivElement>(null)
-  // const step3DescRef = useRef<HTMLDivElement>(null)
+
+  const sec4TitleRef = useRef<HTMLHeadingElement>(null)
+  const sec4Box1Ref = useRef<HTMLDivElement>(null)
+  const sec4Box2Ref = useRef<HTMLDivElement>(null)
+  const sec4Box3Ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     // 
     if (isFirstTouch.current) {
@@ -148,6 +150,29 @@ function App() {
         if (scale < 0.1) scale = 0
         console.log('scale ', scale)
         canvasRef.current!.style.transform = `scale(${scale}) translateY(${y}px)`
+      }
+      // 5 之后
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 4.2) {
+        sec4TitleRef.current?.classList.add('move-up-and-fade-in')
+        sec4Box1Ref.current?.classList.add('move-up-and-fade-in')
+        sec4Box2Ref.current?.classList.add('move-up-and-fade-in')
+        sec4Box3Ref.current?.classList.add('move-up-and-fade-in')
+        // remove move-up-and-fade-out
+        sec4TitleRef.current?.classList.remove('move-up-and-fade-out')
+        sec4Box1Ref.current?.classList.remove('move-up-and-fade-out')
+        sec4Box2Ref.current?.classList.remove('move-up-and-fade-out')
+        sec4Box3Ref.current?.classList.remove('move-up-and-fade-out')
+      }
+      else {
+        sec4TitleRef.current?.classList.add('move-up-and-fade-out')
+        sec4Box1Ref.current?.classList.add('move-up-and-fade-out')
+        sec4Box2Ref.current?.classList.add('move-up-and-fade-out')
+        sec4Box3Ref.current?.classList.add('move-up-and-fade-out')
+        // remove move-up-and-fade-in
+        sec4TitleRef.current?.classList.remove('move-up-and-fade-in')
+        sec4Box1Ref.current?.classList.remove('move-up-and-fade-in')
+        sec4Box2Ref.current?.classList.remove('move-up-and-fade-in')
+        sec4Box3Ref.current?.classList.remove('move-up-and-fade-in')
       }
 
     })
@@ -378,9 +403,9 @@ function App() {
           </div>
         </div>
         <div className="relative w-full bg-white md:px-[80px] px-[20px]">
-          <div className='section_title4 w-[60%]'>Your investments<br />are <span className='font-bold italic'>secured</span> with us</div>
+          <div ref={sec4TitleRef} className='section_title4 w-[60%]'>Your investments<br />are <span className='font-bold italic'>secured</span> with us</div>
           <div className="grid grid-cols-1 lg:grid-cols-3 justify-between gap-8 lg:gap-16 mt-[150px]">
-            <div className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
+            <div ref={sec4Box1Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
               <div id="about-content" className="flex flex-col gap-8">
                 <img alt="Gurrjohns" loading="lazy" width="492" height="100"
                   decoding="async" data-nimg="1" className=" w-[160px]" style={{ color: 'transparent' }}
@@ -393,7 +418,7 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
+            <div ref={sec4Box2Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
               <div id="about-content" className="flex flex-col gap-8">
                 <img alt="Axa" loading="lazy" width="225" height="225"
                   decoding="async" data-nimg="1" className=" w-[40px]" style={{ color: 'transparent' }}
@@ -406,7 +431,7 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
+            <div ref={sec4Box3Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
               <div id="about-content" className="flex flex-col gap-8">
                 <div className="flex gap-8">
                   <img alt="Momart" loading="lazy" width="60" height="60" decoding="async" data-nimg="1"
@@ -428,7 +453,8 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="bg-black w-full relative mt-[80px]">
+        <div className="bg-white w-full relative h-[100px]"></div>
+        <div className="bg-black w-full relative">
           <div className="max-w-screen-2xl w-[90vw] mx-auto sm:w-[85vw] py-16">
             <div className="flex flex-col lg:flex-row lg:justify-between gap-8">
               <div className="flex flex-col gap-8">
