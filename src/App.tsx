@@ -428,7 +428,7 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="bg-black w-full relative ">
+        <div className="bg-black w-full relative mt-[80px]">
           <div className="max-w-screen-2xl w-[90vw] mx-auto sm:w-[85vw] py-16">
             <div className="flex flex-col lg:flex-row lg:justify-between gap-8">
               <div className="flex flex-col gap-8">
