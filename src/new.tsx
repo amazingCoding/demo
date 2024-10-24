@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { imgs } from "./action";
-import { throttle } from "./help";
+// import { throttle } from "./help";
 
 function New() {
   useEffect(() => {

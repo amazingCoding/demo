@@ -1,7 +1,7 @@
 
 
 import { useEffect, useRef, useState } from 'react'
-import { drawFrame, imgs } from './action'
+import {imgs } from './action'
 import video1 from './assets/1.mp4'
 import heroImage from './assets/hero.jpg'
 import video2 from './assets/2.mp4'

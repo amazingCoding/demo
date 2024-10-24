@@ -1,5 +1,4 @@
-import { useEffect, useRef } from "react";
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 // const Test = () => {
 //   const isFirstRef = useRef(true)
 //   // https://demo-oimq.vercel.app/assets/1-DymY1hbp.mp4
