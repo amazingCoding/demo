@@ -42,6 +42,7 @@ function App() {
   const sec4Box2Ref = useRef<HTMLDivElement>(null)
   const sec4Box3Ref = useRef<HTMLDivElement>(null)
   const stepTextRef = useRef<HTMLDivElement>(null)
+  const videoBoxRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     // 
     if (isFirstTouch.current) {
@@ -73,6 +74,12 @@ function App() {
       // } else {
       //   setIsOpen(false)
       // }
+      // 离开第一屏则 videoBoxRef 透明度设置成 0 
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight) {
+        videoBoxRef.current!.style.opacity = '0'
+      } else {
+        videoBoxRef.current!.style.opacity = '1'
+      }
       // section 2 标题和描述 从 0.6 * windowHeight 到 windowHeight  之间, 逐渐显示
       if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= 0.1 * windowHeight) {
         // 判断有没有 class move-up-and-fade-in
@@ -333,8 +340,8 @@ function App() {
     <div className='w-full h-full overflow-y-auto bg-white absolute top-0 left-0' ref={scrollRef}>
       <div>
         {/* section 1 */}
-        <section className='h-svh w-full absolute top-0 left-0' >
-          <div className="w-full h-full" >
+        <section className='h-svh w-full absolute top-0 left-0 bg-white' >
+          <div className="w-full h-full" ref={videoBoxRef}>
             <video playsInline={true} autoPlay={true} muted={true} loop={true}
               id='video1'
               className="h-full w-full object-cover" poster={heroImage} ref={videoRef}>
