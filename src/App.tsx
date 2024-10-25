@@ -13,13 +13,13 @@ import img2 from './assets/2.webp'
 import img3 from './assets/3.webp'
 import img4 from './assets/4.webp'
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-const step3Index = ['01', '02', '03']
-const step3Text = ['Explore', 'Invest', 'Earn']
-const step3Desc = [
-  'Browse a collection of iconic masterpieces carefully handpicked by our expert curators from Sotheby\'s and Christie\'s.', 'Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.', 'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
-  'Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.', 'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
-  'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
-]
+// const step3Index = ['01', '02', '03']
+// const step3Text = ['Explore', 'Invest', 'Earn']
+// const step3Desc = [
+//   'Browse a collection of iconic masterpieces carefully handpicked by our expert curators from Sotheby\'s and Christie\'s.', 'Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.', 'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
+//   'Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.', 'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
+//   'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
+// ]
 function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [step, setStep] = useState(0)
@@ -150,8 +150,13 @@ function App() {
         // if (scale < 0.1 || scale < 0) scale = 0
         // console.log('scale ', scale)
         canvasRef.current!.style.transform = `translateY(${y}px)`
+        canvasRef.current!.style.webkitTransform = `translateY(${y}px)`
+        // canvasRef.current!.style.MozTransform = `translateY(${y}px)`
+
         // stepTextRef
         stepTextRef.current!.style.transform = `translateY(${y}px)`
+        stepTextRef.current!.style.webkitTransform = `translateY(${y}px)`
+        // stepTextRef.current!.style.MozTransform = `translateY(${y}px)`
       }
       // 5 之后
       if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 4.1) {
@@ -281,7 +286,7 @@ function App() {
     else {
       canvas!.style.position = 'fixed'
       canvas!.style.pointerEvents = 'none'
-      canvas!.style.bottom = -60 + 'px'
+      canvas!.style.bottom = 0 + 'px'
       canvas!.style.zIndex = '1'
       canvas!.style.left = window.innerWidth * -0.2 + 'px'
     }
@@ -499,12 +504,30 @@ function App() {
           </div>
         </div>
         {/* pointerEvents */}
-        <div ref={stepTextRef} className="fixed bottom-[0px] left-[20px] h-svh z-[1] pt-[100px] px-[50px] pointer-events-none md:hidden">
+        <div ref={stepTextRef} className="fixed bottom-[0px] left-[20px] h-svh pr-[20px] z-[1] pt-[85px] pointer-events-none md:hidden">
           {
             step3 === -1 ? null : <>
-              <div className='stepIndex'>{step3Index[step3]}</div>
-              <div className='stepTitle'>{step3Text[step3]}</div>
-              <div className='stepDesc'>{step3Desc[step3]}</div>
+              {
+                step3 === 0 ? <div className='stepBox2 fade-in'>
+                  <div className='stepIndex'>01</div>
+                  <div className='stepTitle'>Explore</div>
+                  <div className='stepDesc'>Browse a collection of iconic masterpieces carefully handpicked by our expert curators from Sotheby's and Christie's.</div>
+                </div> : null
+              }
+              {
+                step3 === 1 ? <div className='stepBox2 fade-in'>
+                  <div className='stepIndex'>02</div>
+                  <div className='stepTitle'>Invest</div>
+                  <div className='stepDesc'>Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.</div>
+                </div> : null
+              }
+              {
+                step3 === 2 ? <div className='stepBox2 fade-in'>
+                  <div className='stepIndex'>03</div>
+                  <div className='stepTitle'>Earn</div>
+                  <div className='stepDesc'>Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.</div>
+                </div> : null
+              }
             </>
           }
         </div>
