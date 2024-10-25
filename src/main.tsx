@@ -24,7 +24,9 @@ function Main() {
     </Router>
   );
 }
-
+if (history.scrollRestoration) {
+  history.scrollRestoration = 'manual';
+}
 createRoot(document.getElementById('root')!).render(
   <Main />
 )

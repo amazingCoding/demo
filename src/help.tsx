@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 export function throttle<T extends (...args: any[]) => void>(func: T, limit: number): T {
   let inThrottle: boolean;
   return function (this: any, ...args: Parameters<T>) {
@@ -10,4 +12,27 @@ export function throttle<T extends (...args: any[]) => void>(func: T, limit: num
       }, limit);
     }
   } as T;
+}
+
+export const useWindowChange = () => {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  })
+  useEffect(() => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+    window.addEventListener('resize', () => {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    })
+    return () => {
+      window.removeEventListener('resize', () => { })
+    }
+  }, [])
+  return size
 }

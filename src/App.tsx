@@ -56,8 +56,9 @@ function App() {
       })
     }
     init()
+    setCanvasSize()
     initCanvas()
-    // setCanvasSize()
+    
   }, [])
   const init = async () => {
     // 获取滚动方向
@@ -65,7 +66,7 @@ function App() {
     scrollRef.current?.addEventListener('scroll', () => {
       // const upDirection = lastScrollTop.current > (scrollRef.current?.scrollTop || 0) ? true : false
       // console.log(upDirection)
-      // 去到 一个 h-screen 的 高度 ,header 变化
+      // 去到 一个 h-svh 的 高度 ,header 变化
       const windowHeight = window.innerHeight
       // if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight) {
       //   setIsOpen(true)
@@ -98,13 +99,11 @@ function App() {
         setStep(0)
       }
       // section 1,  从 0.3 * windowHeight 到 windowHeight  之间, 背景逐渐变黑 rgba(0,0,0,0.0) ~ rgba(0,0,0,0.8)
-      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop < windowHeight) {
+      if (scrollRef.current?.scrollTop) {
         // (scrollRef.current?.scrollTop > 0.3 * windowHeight)
-        if (scrollRef.current?.scrollTop > 0.3 * windowHeight) {
-          step1BoxRef.current!.style.backgroundColor = `rgba(0,0,0,${scrollRef.current?.scrollTop / windowHeight * 0.8})`
-        } else {
-          step1BoxRef.current!.style.backgroundColor = `rgba(0,0,0,0)`
-        }
+        let step1BoxOpacity = scrollRef.current?.scrollTop / windowHeight
+        if (step1BoxOpacity > 0.8) step1BoxOpacity = 0.8
+        step1BoxRef.current!.style.backgroundColor = `rgba(0,0,0,${step1BoxOpacity})`
       }
       // section 1 的底部圆形按钮
       if (scrollRef.current?.scrollTop && (scrollRef.current?.scrollTop > 0 || scrollRef.current?.scrollTop < windowHeight)) {
@@ -128,15 +127,15 @@ function App() {
 
       // step3
       // innerHeight > 2 * windowHeight || innerHeight < windowHeight * 3
-      if (scrollRef.current?.scrollTop && (scrollRef.current?.scrollTop > 1.8 * windowHeight && scrollRef.current?.scrollTop < windowHeight * 3)) {
+      if (scrollRef.current?.scrollTop && (scrollRef.current?.scrollTop > 1.8 * windowHeight && scrollRef.current?.scrollTop < windowHeight * 2.5)) {
         setStep3(0)
       }
       // 3 ~ 4
-      else if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight * 3 && scrollRef.current?.scrollTop < windowHeight * 4) {
+      else if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight * 2.5 && scrollRef.current?.scrollTop < windowHeight * 3.5) {
         setStep3(1)
       }
       // 4 
-      else if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 4) {
+      else if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight * 3.5) {
         setStep3(2)
       }
       else {
@@ -181,7 +180,7 @@ function App() {
     })
   }
   const initCanvas = () => {
-    setCanvasSize()
+    // setCanvasSize()
     const THREE = window.THREE
     const scene = new THREE.Scene();
     const container = canvasRef.current!;
@@ -282,7 +281,7 @@ function App() {
     else {
       canvas!.style.position = 'fixed'
       canvas!.style.pointerEvents = 'none'
-      canvas!.style.bottom = 0 + 'px'
+      canvas!.style.bottom = -60 + 'px'
       canvas!.style.zIndex = '1'
       canvas!.style.left = window.innerWidth * -0.2 + 'px'
     }
@@ -326,10 +325,10 @@ function App() {
       </div> : null
     }
     {/* body */}
-    <div className='w-full h-full overflow-y-auto absolute top-0 left-0' ref={scrollRef}>
+    <div className='w-full h-full overflow-y-auto bg-white absolute top-0 left-0' ref={scrollRef}>
       <div>
         {/* section 1 */}
-        <section className='h-screen w-full fixed top-0 left-0' >
+        <section className='h-svh w-full absolute top-0 left-0' >
           <div className="w-full h-full" >
             <video playsInline={true} autoPlay={true} muted={true} loop={true}
               id='video1'
@@ -345,7 +344,7 @@ function App() {
             </div>
           </div>
         </section>
-        <div className="relative h-screen w-full bg-transparent relative" ref={step1BoxRef}>
+        <div className="relative h-svh w-full bg-transparent relative inset-0" ref={step1BoxRef}>
           <div ref={circleRef} className='absolute md:bottom-[35px] left-1/2 md:w-[70px] md:h-[70px] w-[60px] h-[60px] bottom-[25px] ml-[-35px] bg-transparent cursor-pointer rounded-full'
             onMouseEnter={() => {
               if (isMobile) return
@@ -363,142 +362,144 @@ function App() {
           </div>
         </div>
         {/* section 2 */}
-        <div className="relative w-screen h-screen bg-white relative overflow-hidden">
-          {/* 1984 * 1116 */}
-          <div className='flex relative z-[1] section_2'>
-            <h1 ref={sec2TitleRef} className='text-black move-up-and-fade-out'>Art Is The Visual <span className="italic font-medium">Proof Of History</span> For Humanity</h1>
-            <p ref={sec2DescRef} className='text-black move-up-and-fade-out'>
-              Arttoo is about unlocking a world of possibilities.Become part of a vibrant art community, connect with a timeless piece of culture, and watch your investment grow alongside your passion, with a hassle-free mindset for provenance tracking. All transactions are secure, transparent, and regulated through the beauty of blockchain technologies.
-            </p>
+        <div className='bg-white'>
+          <div className="relative w-screen h-svh bg-white relative overflow-hidden">
+            {/* 1984 * 1116 */}
+            <div className='flex relative z-[1] section_2'>
+              <h1 ref={sec2TitleRef} className='text-black move-up-and-fade-out'>Art Is The Visual <span className="italic font-medium">Proof Of History</span> For Humanity</h1>
+              <p ref={sec2DescRef} className='text-black move-up-and-fade-out'>
+                Arttoo is about unlocking a world of possibilities. Become part of a vibrant art community, connect with a timeless piece of culture, and watch your investment grow alongside your passion, with a hassle-free mindset for provenance tracking. All transactions are secure, transparent, and regulated through the beauty of blockchain technologies.
+              </p>
+            </div>
+            <video
+              playsInline={true}
+              muted={true} loop={true}
+              id='video2'
+              poster={sec_2_image}
+              ref={video2Ref}
+              className='w-full object-cover'
+            >
+              <source src={video2_1} type="video/webm" />
+              <source src={video2} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
-          <video
-            playsInline={true}
-            muted={true} loop={true}
-            id='video2'
-            poster={sec_2_image}
-            ref={video2Ref}
-            className='w-full object-cover'
-          >
-            <source src={video2_1} type="video/webm" />
-            <source src={video2} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div className="relative w-full bg-white h-screen flex md:flex-row flex-col justify-center items-center">
-          <div className="flex-1 md:block hidden"></div>
-          <div className="flex-1 stepBox md:block hidden">
-            <div className='stepIndex'>01</div>
-            <div className='stepTitle'>Explore</div>
-            <div className='stepDesc'>Browse a collection of iconic masterpieces carefully handpicked by our expert curators from Sotheby's and Christie's.</div>
+          <div className="relative w-full bg-white h-svh flex md:flex-row flex-col justify-center items-center">
+            <div className="flex-1 md:block hidden"></div>
+            <div className="flex-1 stepBox md:block hidden">
+              <div className='stepIndex'>01</div>
+              <div className='stepTitle'>Explore</div>
+              <div className='stepDesc'>Browse a collection of iconic masterpieces carefully handpicked by our expert curators from Sotheby's and Christie's.</div>
+            </div>
           </div>
-        </div>
-        <div className="relative w-full bg-white h-screen flex md:flex-row flex-col justify-center items-center">
-          <div className="flex-1 md:block hidden"></div>
-          <div className="flex-1 stepBox md:block hidden">
-            <div className='stepIndex'>02</div>
-            <div className='stepTitle'>Invest</div>
-            <div className='stepDesc'>Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.</div>
+          <div className="relative w-full bg-white h-svh flex md:flex-row flex-col justify-center items-center">
+            <div className="flex-1 md:block hidden"></div>
+            <div className="flex-1 stepBox md:block hidden">
+              <div className='stepIndex'>02</div>
+              <div className='stepTitle'>Invest</div>
+              <div className='stepDesc'>Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.</div>
+            </div>
           </div>
-        </div>
-        <div className="relative w-full bg-white h-screen flex md:flex-row flex-col justify-center items-center">
-          <div className="flex-1 md:block hidden"></div>
-          <div className="flex-1 stepBox md:block hidden">
-            <div className='stepIndex'>03</div>
-            <div className='stepTitle'>Earn</div>
-            <div className='stepDesc'>Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.</div>
+          <div className="relative w-full bg-white h-svh flex md:flex-row flex-col justify-center items-center">
+            <div className="flex-1 md:block hidden"></div>
+            <div className="flex-1 stepBox md:block hidden">
+              <div className='stepIndex'>03</div>
+              <div className='stepTitle'>Earn</div>
+              <div className='stepDesc'>Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.</div>
+            </div>
           </div>
-        </div>
-        <div className="relative w-full bg-white md:px-[80px] px-[20px]">
-          <div ref={sec4TitleRef} className='section_title4'>
-            Your investments<br />are <span className='font-bold italic'>secured</span> with us
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 justify-between gap-8 lg:gap-16 md:mt-[150px] mt-[40px]">
-            <div ref={sec4Box1Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
-              <div id="about-content" className="flex flex-col gap-8">
-                <img alt="Gurrjohns" loading="lazy" width="492" height="100"
-                  decoding="async" data-nimg="1" className=" w-[160px]" style={{ color: 'transparent' }}
-                  src={img4} />
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-[20px] md:text-[24px] font-semibold leading-[31.44px]">Expert Authentication</h3>
-                  <p className="text-[16px] md:text-[20px] leading-[20.4px] md:leading-[26.2px] text-black/60">We collaborates with
-                    renowned appraisers from GurrJohns (or other established appraisal firms) to meticulously verify artwork
-                    authenticity, condition, and provenance, with its proof of appraisal embedded directly within each token</p>
+          <div className="relative w-full bg-white md:px-[80px] px-[20px]">
+            <div ref={sec4TitleRef} className='section_title4'>
+              Your investments<br />are <span className='font-bold italic'>secured</span> with us
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 justify-between gap-8 lg:gap-16 md:mt-[150px] mt-[40px]">
+              <div ref={sec4Box1Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
+                <div id="about-content" className="flex flex-col gap-8">
+                  <img alt="Gurrjohns" loading="lazy" width="492" height="100"
+                    decoding="async" data-nimg="1" className=" w-[160px]" style={{ color: 'transparent' }}
+                    src={img4} />
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[20px] md:text-[24px] font-semibold leading-[31.44px]">Expert Authentication</h3>
+                    <p className="text-[16px] md:text-[20px] leading-[20.4px] md:leading-[26.2px] text-black/60">We collaborates with
+                      renowned appraisers from GurrJohns (or other established appraisal firms) to meticulously verify artwork
+                      authenticity, condition, and provenance, with its proof of appraisal embedded directly within each token.</p>
+                  </div>
+                </div>
+              </div>
+              <div ref={sec4Box2Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
+                <div id="about-content" className="flex flex-col gap-8">
+                  <img alt="Axa" loading="lazy" width="225" height="225"
+                    decoding="async" data-nimg="1" className=" w-[40px]" style={{ color: 'transparent' }}
+                    src={img3} />
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[20px] md:text-[24px] font-semibold leading-[31.44px]">Comprehensive Insurance</h3>
+                    <p className="text-[16px] md:text-[20px] leading-[20.4px] md:leading-[26.2px] text-black/60">We partner with a
+                      leading art insurance company to provide tailored coverage against theft, damage, and loss during
+                      transportation, storage, and loans.</p>
+                  </div>
+                </div>
+              </div>
+              <div ref={sec4Box3Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
+                <div id="about-content" className="flex flex-col gap-8">
+                  <div className="flex gap-8">
+                    <img alt="Momart" loading="lazy" width="60" height="60" decoding="async" data-nimg="1"
+                      className="w-[40px]" style={{ color: 'transparent' }}
+                      src={img2} />
+                    <img alt="Dietl"
+                      loading="lazy" width="75" height="60" decoding="async" data-nimg="1" className="w-[40px]"
+                      style={{ color: 'transparent' }}
+                      src={img1} />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[20px] md:text-[24px] font-semibold leading-[31.44px]">Secure Transportation and Storage</h3>
+                    <p className="text-[16px] md:text-[20px] leading-[20.4px] md:leading-[26.2px] text-black/60">We partner with trusted
+                      companies like Momart and DIETL International, to ensure secure transportation of the artwork from your
+                      location to our state-of-the-art storage facility equipped with advanced security systems and climate control
+                      to guarantee its preservation.</p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div ref={sec4Box2Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
-              <div id="about-content" className="flex flex-col gap-8">
-                <img alt="Axa" loading="lazy" width="225" height="225"
-                  decoding="async" data-nimg="1" className=" w-[40px]" style={{ color: 'transparent' }}
-                  src={img3} />
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-[20px] md:text-[24px] font-semibold leading-[31.44px]">Comprehensive Insurance</h3>
-                  <p className="text-[16px] md:text-[20px] leading-[20.4px] md:leading-[26.2px] text-black/60">We partner with a
-                    leading art insurance company to provide tailored coverage against theft, damage, and loss during
-                    transportation, storage, and loans.</p>
-                </div>
-              </div>
-            </div>
-            <div ref={sec4Box3Ref} className="w-fit" style={{ opacity: 1, willChange: 'transform', transform: 'none' }}>
-              <div id="about-content" className="flex flex-col gap-8">
-                <div className="flex gap-8">
-                  <img alt="Momart" loading="lazy" width="60" height="60" decoding="async" data-nimg="1"
-                    className="w-[40px]" style={{ color: 'transparent' }}
-                    src={img2} />
-                  <img alt="Dietl"
-                    loading="lazy" width="75" height="60" decoding="async" data-nimg="1" className="w-[40px]"
-                    style={{ color: 'transparent' }}
-                    src={img1} />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-[20px] md:text-[24px] font-semibold leading-[31.44px]">Secure Transportation and Storage</h3>
-                  <p className="text-[16px] md:text-[20px] leading-[20.4px] md:leading-[26.2px] text-black/60">We partner with trusted
-                    companies like Momart and DIETL International, to ensure secure transportation of the artwork from your
-                    location to our state-of-the-art storage facility equipped with advanced security systems and climate control
-                    to guarantee its preservation.</p>
-                </div>
-              </div>
-            </div>
           </div>
-        </div>
-        <div className="bg-white w-full relative h-[100px]"></div>
-        <div className="bg-black w-full relative">
-          <div className="max-w-screen-2xl w-[90vw] mx-auto sm:w-[85vw] py-16">
-            <div className="flex flex-col lg:flex-row lg:justify-between gap-8">
-              <div className="flex flex-col gap-8">
-                <h3
-                  className="text-white  text-[30px] sm:text-[44px] lg:text-[60px] leading-[39.3px] sm:leading-[51.23px] lg:leading-[78.6px] font-medium ">
-                  Ready to Own <span className="italic">Your Piece of History?</span></h3>
-                <div className="flex gap-2 flex-col font-poppins">
-                  <form className="border border-white rounded-full p-1 max-w-[400px] w-full flex">
-                    <input type="text"
-                      className="focus:outline-none bg-transparent px-4 py-2 w-full text-white" placeholder="johndoe@gmail.com"
-                      id="email" value="" />
-                    <button className="bg-white px-4 py-2 rounded-full text-black">Submit</button>
-                  </form>
-                  <p className="text-white text-[11.5px] lg:text-base leading-[19.2px] font-light">Join the Waitlist &amp; Get
-                    Informed when New Artworks are Available!</p>
+          <div className="bg-white w-full relative h-[100px]"></div>
+          <div className="bg-black w-full relative">
+            <div className="max-w-screen-2xl w-[90vw] mx-auto sm:w-[85vw] py-16">
+              <div className="flex flex-col lg:flex-row lg:justify-between gap-8">
+                <div className="flex flex-col gap-8">
+                  <h3
+                    className="text-white  text-[30px] sm:text-[44px] lg:text-[60px] leading-[39.3px] sm:leading-[51.23px] lg:leading-[78.6px] font-medium ">
+                    Ready to Own <span className="italic">Your Piece of History?</span></h3>
+                  <div className="flex gap-2 flex-col font-poppins">
+                    <form className="border border-white rounded-full p-1 max-w-[400px] w-full flex">
+                      <input type="text"
+                        className="focus:outline-none bg-transparent px-4 py-2 w-full text-white" placeholder="johndoe@gmail.com"
+                        id="email" value="" />
+                      <button className="bg-white px-4 py-2 rounded-full text-black">Submit</button>
+                    </form>
+                    <p className="text-white text-[11.5px] lg:text-base leading-[19.2px] font-light">Join the Waitlist &amp; Get
+                      Informed when New Artworks are Available!</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col gap-4 min-w-48">
-                <p className="text-2xl text-white leading-[19.2px] font-light">Follow us on</p>
-                <div className="inline-flex gap-2"><a href="https://x.com/arttoo_official" target="_blank"><svg className="h6 w-6"
-                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-                  <path fill="#fff"
-                    d="M5.92 6l14.662 21.375L6.23 44h3.18l12.576-14.578 10 14.578H44L28.682 21.67 42.199 6h-3.17L27.275 19.617 17.934 6H5.92zm3.797 2h7.164l23.322 34H33.04L9.717 8z">
-                  </path>
-                </svg></a><a href="https://t.me/arttoonetwork" target="_blank"><svg className="h6 w-6"
-                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
-                  <path fill="#fff"
-                    d="M25.154 3.984a2.718 2.718 0 00-.894.217c-.25.1-1.204.51-2.707 1.154-1.505.646-3.497 1.5-5.621 2.415-4.25 1.827-9.028 3.884-11.475 4.937-.092.04-.413.142-.754.408-.34.266-.703.818-.703 1.432 0 .495.236.987.533 1.281.297.294.612.44.881.549l4.58 1.873c.202.617 1.298 3.973 1.553 4.795.168.543.327.883.535 1.152.104.135.225.253.371.346.059.037.123.066.188.092l.004.002c.014.006.027.016.043.021.028.01.047.011.085.02.153.049.307.08.444.08.585 0 .943-.322.943-.322l.022-.016 3.01-2.604 3.65 3.454c.051.072.53.73 1.588.73.627 0 1.125-.315 1.445-.65.32-.336.519-.688.604-1.131v-.002c.079-.419 3.443-17.69 3.443-17.69l-.006.024c.098-.45.124-.868.016-1.281a1.748 1.748 0 00-.75-1.022 1.798 1.798 0 00-1.028-.264zm-.187 2.09c-.005.03.003.015-.004.049l-.002.012-.002.011s-3.323 17.05-3.445 17.7c.009-.05-.032.048-.075.107-.06-.04-.181-.094-.181-.094l-.02-.021-4.986-4.717-3.525 3.047 1.048-4.2s6.557-6.786 6.952-7.18c.318-.317.384-.427.384-.536 0-.146-.076-.252-.246-.252-.153 0-.359.149-.469.219-1.433.913-7.724 4.58-10.544 6.22-.449-.183-3.562-1.458-4.618-1.888l.014-.006 11.473-4.938 5.62-2.414c1.48-.634 2.51-1.071 2.626-1.119z">
-                  </path>
-                </svg></a></div>
+                <div className="flex flex-col gap-4 min-w-48">
+                  <p className="text-2xl text-white leading-[19.2px] font-light">Follow us on</p>
+                  <div className="inline-flex gap-2"><a href="https://x.com/arttoo_official" target="_blank"><svg className="h6 w-6"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path fill="#fff"
+                      d="M5.92 6l14.662 21.375L6.23 44h3.18l12.576-14.578 10 14.578H44L28.682 21.67 42.199 6h-3.17L27.275 19.617 17.934 6H5.92zm3.797 2h7.164l23.322 34H33.04L9.717 8z">
+                    </path>
+                  </svg></a><a href="https://t.me/arttoonetwork" target="_blank"><svg className="h6 w-6"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                    <path fill="#fff"
+                      d="M25.154 3.984a2.718 2.718 0 00-.894.217c-.25.1-1.204.51-2.707 1.154-1.505.646-3.497 1.5-5.621 2.415-4.25 1.827-9.028 3.884-11.475 4.937-.092.04-.413.142-.754.408-.34.266-.703.818-.703 1.432 0 .495.236.987.533 1.281.297.294.612.44.881.549l4.58 1.873c.202.617 1.298 3.973 1.553 4.795.168.543.327.883.535 1.152.104.135.225.253.371.346.059.037.123.066.188.092l.004.002c.014.006.027.016.043.021.028.01.047.011.085.02.153.049.307.08.444.08.585 0 .943-.322.943-.322l.022-.016 3.01-2.604 3.65 3.454c.051.072.53.73 1.588.73.627 0 1.125-.315 1.445-.65.32-.336.519-.688.604-1.131v-.002c.079-.419 3.443-17.69 3.443-17.69l-.006.024c.098-.45.124-.868.016-1.281a1.748 1.748 0 00-.75-1.022 1.798 1.798 0 00-1.028-.264zm-.187 2.09c-.005.03.003.015-.004.049l-.002.012-.002.011s-3.323 17.05-3.445 17.7c.009-.05-.032.048-.075.107-.06-.04-.181-.094-.181-.094l-.02-.021-4.986-4.717-3.525 3.047 1.048-4.2s6.557-6.786 6.952-7.18c.318-.317.384-.427.384-.536 0-.146-.076-.252-.246-.252-.153 0-.359.149-.469.219-1.433.913-7.724 4.58-10.544 6.22-.449-.183-3.562-1.458-4.618-1.888l.014-.006 11.473-4.938 5.62-2.414c1.48-.634 2.51-1.071 2.626-1.119z">
+                    </path>
+                  </svg></a></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
         {/* pointerEvents */}
-        <div ref={stepTextRef} className="fixed bottom-[0px] left-[20px] h-screen z-[1] pt-[100px] px-[50px] pointer-events-none md:hidden">
+        <div ref={stepTextRef} className="fixed bottom-[0px] left-[20px] h-svh z-[1] pt-[100px] px-[50px] pointer-events-none md:hidden">
           {
             step3 === -1 ? null : <>
               <div className='stepIndex'>{step3Index[step3]}</div>

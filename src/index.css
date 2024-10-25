@@ -43,17 +43,20 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Victor Sherif, sans-serif
+  font-family: Victor Sherif, sans-serif;
+  background-color: #000;
 }
 
 html,
 body {
-  width: 100%;
+  font-family: Victor Sherif, sans-serif;
+  overscroll-behavior-y: none;
+  /* width: 100%;
   height: 100%;
   font-family: Victor Sherif, sans-serif;
-  overflow: hidden;
+  overflow: hidden; */
   /* IOS 滚动 */
-  -webkit-overflow-scrolling: touch;
+  /* -webkit-overflow-scrolling: touch; */
 }
 
 #root {
@@ -82,7 +85,7 @@ body {
 
 /* 上移 50px 并且透明度从 0 ～1 */
 .move-up-and-fade-in {
-  animation: move-up-and-fade-in 1s ease-in-out;
+  animation: move-up-and-fade-in 800ms ease-in-out;
   animation-fill-mode: forwards;
 }
 .move-up-and-fade-in2 {
@@ -91,7 +94,7 @@ body {
 }
 
 .move-up-and-fade-out {
-  animation: move-up-and-fade-out 1s ease-in-out;
+  animation: move-up-and-fade-out 800ms ease-in-out;
   animation-fill-mode: forwards;
 }
 
@@ -194,9 +197,25 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  cursor: pointer;
+  /* color: #000; */
 }
 
+.section_hover_btn:hover svg {
+  /* color: #fff; */
+}
+.section_hover_btn:hover .section_hover_circle {
+  width: 64px;
+  height: 64px;
+}
 
+/* 768 以下 */
+@media (max-width: 768px) {
+  .section_hover_btn:hover .section_hover_circle {
+    width: 50px;
+    height: 50px;
+  }
+}
 
 /* 鼠标悬停时，圆圈放大 */
 .section_hover_circle {
@@ -494,7 +513,7 @@ body {
   /* font-style: italic; */
   font-weight: 500;
   color: rgba(0, 0, 0, 0.9);
-  padding-top: 40px;
+  /* padding-top: 40px; */
   /* margin-left: 80px; */
 }
 /* 768 以下 */
