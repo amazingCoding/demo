@@ -420,7 +420,7 @@ function App() {
               <div className='stepDesc'>Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.</div>
             </div>
           </div>
-          <div className="relative w-full bg-white md:px-[80px] px-[20px]">
+          <div className="relative w-full bg-white md:px-[80px] px-[20px] pb-[100px]">
             <div ref={sec4TitleRef} className='section_title4'>
               Your investments<br />are <span className='font-bold italic'>secured</span> with us
             </div>
@@ -473,9 +473,9 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="bg-white w-full relative h-[100px]"></div>
+          {/* <div className="bg-white w-full relative h-[100px]"></div> */}
           <div className="bg-black w-full relative">
-            <div className="max-w-screen-2xl w-[90vw] mx-auto sm:w-[85vw] py-16">
+            <div className="mx-auto py-16 md:px-[80px] px-[20px]">
               <div className="flex flex-col lg:flex-row lg:justify-between gap-8">
                 <div className="flex flex-col gap-8">
                   <h3
