@@ -48,7 +48,9 @@ function App() {
     init()
     setCanvasSize()
     initCanvas()
-
+    window.addEventListener('resize', () => {
+      setCanvasSize()
+    })
   }, [])
   const init = async () => {
     scrollRef.current?.addEventListener('scroll', () => {
@@ -208,8 +210,8 @@ function App() {
     function updateTexture(frame: number) {
       if (loadedTextures[frame]) {
         material.map.dispose();
-        material.map = loadedTextures[frame]; 
-        material.needsUpdate = true; 
+        material.map = loadedTextures[frame];
+        material.needsUpdate = true;
       }
     }
 
@@ -265,9 +267,7 @@ function App() {
       canvas!.style.left = window.innerWidth * -0.2 + 'px'
     }
     //  window resize 重新设置 canvas
-    window.addEventListener('resize', () => {
-      setCanvasSize()
-    })
+
   }
   return <div className='w-full h-full'>
     {/* header */}
