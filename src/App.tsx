@@ -13,19 +13,11 @@ import img2 from './assets/2.webp'
 import img3 from './assets/3.webp'
 import img4 from './assets/4.webp'
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-// const step3Index = ['01', '02', '03']
-// const step3Text = ['Explore', 'Invest', 'Earn']
-// const step3Desc = [
-//   'Browse a collection of iconic masterpieces carefully handpicked by our expert curators from Sotheby\'s and Christie\'s.', 'Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.', 'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
-//   'Start investing in fractional shares of legacy masterpieces with no auction house markups, no gallery markups, no hidden true-up fees.', 'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
-//   'Watch your investment grow in value through auction exits, rents from exhibitions in museums and galleries, loyalty from NFT recreations and consumer merchandise and many more.',
-// ]
 function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [step, setStep] = useState(0)
   const [step3, setStep3] = useState(-1)
   const [hover, setHover] = useState(false)
-  // const [hoverCircle, setHoverCircle] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -44,45 +36,32 @@ function App() {
   const stepTextRef = useRef<HTMLDivElement>(null)
   const videoBoxRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    // 
     if (isFirstTouch.current) {
-      // 绑定
       window.addEventListener('click', () => {
         isFirstTouch.current = false
         if (isMobile) {
           videoRef.current?.play()
         }
-        // 删除
         window.removeEventListener('click', () => { })
       })
     }
     init()
     setCanvasSize()
     initCanvas()
-    
+
   }, [])
   const init = async () => {
-    // 获取滚动方向
-
     scrollRef.current?.addEventListener('scroll', () => {
-      // const upDirection = lastScrollTop.current > (scrollRef.current?.scrollTop || 0) ? true : false
-      // console.log(upDirection)
-      // 去到 一个 h-svh 的 高度 ,header 变化
       const windowHeight = window.innerHeight
-      // if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight) {
-      //   setIsOpen(true)
-      // } else {
-      //   setIsOpen(false)
-      // }
       // 离开第一屏则 videoBoxRef 透明度设置成 0 
       if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight) {
         videoBoxRef.current!.style.opacity = '0'
-      } else {
+      }
+      else {
         videoBoxRef.current!.style.opacity = '1'
       }
       // section 2 标题和描述 从 0.6 * windowHeight 到 windowHeight  之间, 逐渐显示
       if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= 0.1 * windowHeight) {
-        // 判断有没有 class move-up-and-fade-in
         if (!sec2TitleRef.current?.classList.contains('move-up-and-fade-in')) {
           sec2TitleRef.current?.classList.remove('move-up-and-fade-out')
           sec2DescRef.current?.classList.remove('move-up-and-fade-out')
@@ -99,15 +78,10 @@ function App() {
         }
       }
       // header,  大于 windowHeight - headerRef.current?.clientHeight
-      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight) {
-        setStep(1)
-      }
-      else {
-        setStep(0)
-      }
-      // section 1,  从 0.3 * windowHeight 到 windowHeight  之间, 背景逐渐变黑 rgba(0,0,0,0.0) ~ rgba(0,0,0,0.8)
+      if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop >= windowHeight) setStep(1)
+      else setStep(0)
+      // section 1, 背景逐渐变黑 rgba(0,0,0,0.0) ~ rgba(0,0,0,0.8)
       if (scrollRef.current?.scrollTop) {
-        // (scrollRef.current?.scrollTop > 0.3 * windowHeight)
         let step1BoxOpacity = scrollRef.current?.scrollTop / windowHeight
         if (step1BoxOpacity > 0.8) step1BoxOpacity = 0.8
         step1BoxRef.current!.style.backgroundColor = `rgba(0,0,0,${step1BoxOpacity})`
@@ -122,18 +96,19 @@ function App() {
       //  VIDEO1 
       if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight) {
         if (videoRef.current?.play) videoRef.current?.pause()
-      } else {
+      }
+      else {
         if (videoRef.current?.pause) videoRef.current?.play()
       }
       //  VIDEO2
       if (scrollRef.current?.scrollTop && scrollRef.current?.scrollTop > windowHeight * 0.6) {
         if (video2Ref.current?.pause) video2Ref.current?.play()
-      } else {
+      }
+      else {
         if (video2Ref.current?.play) video2Ref.current?.pause()
       }
 
       // step3
-      // innerHeight > 2 * windowHeight || innerHeight < windowHeight * 3
       if (scrollRef.current?.scrollTop && (scrollRef.current?.scrollTop > 1.8 * windowHeight && scrollRef.current?.scrollTop < windowHeight * 2.5)) {
         setStep3(0)
       }
@@ -192,12 +167,10 @@ function App() {
     })
   }
   const initCanvas = () => {
-    // setCanvasSize()
     const THREE = window.THREE
     const scene = new THREE.Scene();
     const container = canvasRef.current!;
     const scrollContainer = scrollRef.current!
-    //document.getElementById('scroll-container') as HTMLDivElement;
     // 创建相机
     const camera = new THREE.PerspectiveCamera(75, container?.clientWidth / container?.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({
@@ -234,15 +207,12 @@ function App() {
     // 更新帧函数，根据当前帧数切换纹理
     function updateTexture(frame: number) {
       if (loadedTextures[frame]) {
-        material.map.dispose(); // 释放旧纹理
-        material.map = loadedTextures[frame]; // 更新为新的纹理
-        material.needsUpdate = true; // 告诉 Three.js 更新材质
+        material.map.dispose();
+        material.map = loadedTextures[frame]; 
+        material.needsUpdate = true; 
       }
     }
 
-
-    // // 使用 setInterval 来控制帧率
-    // setInterval(updateTexture, frameRate);
 
     // 渲染循环
     function animate() {
@@ -271,8 +241,6 @@ function App() {
     }
 
     scrollContainer?.addEventListener('scroll', onScroll);
-    // scrollRef.current?.addEventListener('scroll', onScrollRef)
-    // scrollRef.current?.addEventListener('scroll', onScrollRef)
     animate();
   }
   const setCanvasSize = () => {
@@ -287,7 +255,6 @@ function App() {
     if (window.innerWidth > 768) {
       canvas!.style.position = 'fixed'
       canvas!.style.top = window.innerHeight / 2 - width / 2 + 'px'
-      // 不响应滚动
       canvas!.style.pointerEvents = 'none'
     }
     else {
